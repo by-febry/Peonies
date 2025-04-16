@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Bella My Love</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"
+  <!-- Add this audio element (hidden) -->
+  <audio id="bgMusic" loop>
+    <source src="Bruno Major - Nothing (Lyrics).mp3" type="audio/mpeg">
+    <!-- Fallback message -->
+    Your browser does not support audio playback.
+  </audio>
+  
+</head>
+<body>
+  <h1>For Bella</h1>
+  <div class="pulse-overlay"></div>
+  <div class="flower-container">
+    <img src="Back Off Love GIF.gif" alt="Flower" class="flower-img" />
+    <div class="heart-border"></div>
+  </div>
+  <div class="divider-container">
+    <div class="divider-line"></div>
+    <div class="divider-text">
+      <button class="arrow-btn" id="arrowLeft">
+        <i class="fas fa-angle-left"></i>
+      </button>
+      <div class="message-container" id="messageContainer"></div>
+      <button class="arrow-btn" id="arrowRight">
+        <i class="fas fa-angle-right"></i>
+      </button>
+    </div>
+    <div class="divider-line"></div>
+  </div>
+  <!-- Add music toggle button -->
+  <button class="music-btn" id="musicToggle">
+    <i class="fas fa-music"></i>
+  </button>
+
+  <div class="fraction">
+    1/1 / 100
+  </div>
+
+  <script>
+    const messages = [
+      "Hi love, peonies for you. I appreciate you so much. Thank you for loving me when I don't always get things right.",
+      "Thank you for staying, for understanding, for choosing me despite doing wrong things.",
+      "I am really lucky to have you, You are everything to me. I'll never stop being grateful that's its you.",
+      "I've been really thinking about my actions towards you and I realize na some of my actions, I might lose you if I don't change.",
+      "I know you want a gentle love, a peaceful environment, and parang hindi ko siya naipapakita sayo.",
+      "I've made you feel like you had to prove yourself, and I wasn't aware na ganon na pala naipaparamdam ko sayo.",
+      "You deserve to be loved, to feel safe, heard, cherished, and not questioned.",
+      "I'm sorry din kasi for being short-tempered when playing and I know that im making you feel unmcomfy or upset.",
+      "Lalo na ngayon na may sakit ka sa tenga na bawal sa maingay, malakas boses at ma-stress.",
+      "I'm going to be mindful of how I react, I'll do better.",
+      "I never want to feel like you're not enough for me baby, because you are.",
+      "I will change myself, I have a girlfriend now. I don't want her to leave.",
+      "I'm so sorry na nasaktan kita, I really hate that I made you feel that way love.",
+      "I know I've said a lot of sorrys, but this time its a promise",
+      "I don't to make you feel tired, drained again. You deserve to feel secure.",
+      "I am really lucky to have you, cause everytime na nagoopen up ka. I feel like you still want to fix things with me.",
+      "and ayokong umabot ikaw sa punto na pagod na pagod kana. I don't want to be the reason why you feel like giving up.",
+      "We're both not perfect but I know how much I love you and I know how much you love me.",
+      "I'm willing to change, grow, compromise because alam ko you're worth it love.",
+      "Mahal na mahal kita, I wish i was there talaga beside you lalo na ngayon na you have ear problem.",
+      "Thank you love so much, I'll keep showing up better, gentler, and more aware for you. for us. for our future childs.",
+      "Thank you for being you, I love you always in all ways, bella!"
+    ];
+  
+    let currentIndex = 0;
+    const messageContainer = document.getElementById('messageContainer');
+    const leftArrow = document.getElementById('arrowLeft');
+    const rightArrow = document.getElementById('arrowRight');
+  
+    function animateText(text) {
+      messageContainer.innerHTML = '';
+      // Process each character while preserving original spacing
+      for (let i = 0; i < text.length; i++) {
+        const span = document.createElement('span');
+        span.className = 'letter';
+        span.textContent = text[i]; // Keep original characters including spaces
+        span.style.animationDelay = `${i * 0.04}s`;
+        messageContainer.appendChild(span);
+      }
+    }
+    function updateText() {
+      animateText(messages[currentIndex]);
+      document.querySelector('.fraction').textContent = `${currentIndex + 1}/${messages.length}`;
+    }
+  
+    leftArrow.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateText();
+      }
+    });
+  
+    rightArrow.addEventListener('click', () => {
+      if (currentIndex < messages.length - 1) {
+        currentIndex++;
+        updateText();
+      }
+    });
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') leftArrow.click();
+      if (e.key === 'ArrowRight') rightArrow.click();
+    });
+    
+    updateText();
+    // Music autoplay with user interaction fallback
+    document.addEventListener('DOMContentLoaded', function() {
+      const music = document.getElementById('bgMusic');
+      const toggleBtn = document.getElementById('musicToggle');
+      
+      // Try autoplay (may not work on all browsers)
+      const playPromise = music.play();
+      
+      // Handle autoplay restrictions
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          // Show button if autoplay fails
+          toggleBtn.style.display = 'block';
+        });
+      }
+      
+      // Toggle button functionality
+      toggleBtn.addEventListener('click', function() {
+        if (music.paused) {
+          music.play();
+          toggleBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        } else {
+          music.pause();
+          toggleBtn.innerHTML = '<i class="fas fa-music"></i>';
+        }
+      });
+      
+      // Start with button hidden if autoplay works
+      toggleBtn.style.display = 'none';
+    });
+
+     // Create floating hearts
+     function createHearts(count) {
+      for (let i = 0; i < count; i++) {
+        const heart = document.createElement('div');
+        heart.innerHTML = '<i class="fas fa-heart"></i>';
+        heart.className = 'heart';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.top = Math.random() * 100 + 'vh';
+        heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+        heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        document.body.appendChild(heart);
+        
+        // Remove heart after animation
+        setTimeout(() => {
+          heart.remove();
+        }, 4000);
+      }
+    }
+    
+    // Heart border effect
+    const heartBorder = document.querySelector('.heart-border');
+    
+    // Enhanced arrow click handlers
+    function addArrowEffects() {
+      [leftArrow, rightArrow].forEach(arrow => {
+        arrow.addEventListener('click', () => {
+          // Heart border pulse
+          heartBorder.classList.remove('active');
+          void heartBorder.offsetWidth; // Trigger reflow
+          heartBorder.classList.add('active');
+          
+          // Floating hearts
+          createHearts(8);
+        });
+      });
+    }
+    
+    // Initialize
+    addArrowEffects();
+    updateText();
+    
+    // Continuous subtle hearts in background
+    setInterval(() => createHearts(2), 3000);
+
+     // Full-screen pulse effect
+     const pulseOverlay = document.querySelector('.pulse-overlay');
+    
+    function triggerPulse() {
+      pulseOverlay.classList.remove('active');
+      void pulseOverlay.offsetWidth; // Trigger reflow
+      pulseOverlay.classList.add('active');
+    }
+    
+    // Create floating hearts (faded version)
+    function createHearts(count) {
+      for (let i = 0; i < count; i++) {
+        const heart = document.createElement('div');
+        heart.innerHTML = '<i class="fas fa-heart"></i>';
+        heart.className = 'heart';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.bottom = '10px'; // Start from bottom
+        heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
+        heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+        document.body.appendChild(heart);
+        
+        setTimeout(() => heart.remove(), 4000);
+      }
+    }
+    
+    // Enhanced arrow click handlers
+    function addArrowEffects() {
+      [leftArrow, rightArrow].forEach(arrow => {
+        arrow.addEventListener('click', () => {
+          triggerPulse();
+          createHearts(5); // Fewer, more subtle hearts
+        });
+      });
+    }
+    
+    // Initialize
+    addArrowEffects();
+    updateText();
+    
+    // Gentle background hearts
+    setInterval(() => createHearts(1), 2000);
+  </script>
+</body>
+</html>
